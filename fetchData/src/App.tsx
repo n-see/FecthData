@@ -3,6 +3,10 @@ import ProductList from "./Components/ProductList"
 import UseEffectExample from "./Components/UseEffectExample"
 import UseEffectExample2 from "./Components/UseEffectExample2"
 import FetchingAxios from "./Components/FetchingAxios";
+import FetchingWFetch from "./Components/FetchingWFetch";
+import AsyncAwait from "./Components/AsyncAwait";
+import LoadingIndicator from "./Components/LoadingIndicator";
+import DeleteData from "./Components/DeleteData";
 
 
 const App = () => {
@@ -21,7 +25,11 @@ const App = () => {
                 <option value='Household'>Household</option>
             </select>
         </div> */}
-        <FetchingAxios/>
+        {/* <FetchingAxios/> */}
+        {/* <FetchingWFetch/> */}
+        {/* <AsyncAwait/> */}
+        {/* <LoadingIndicator/> */}
+        <DeleteData/>
     </>
   )
 }
