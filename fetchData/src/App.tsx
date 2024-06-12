@@ -7,6 +7,9 @@ import FetchingWFetch from "./Components/FetchingWFetch";
 import AsyncAwait from "./Components/AsyncAwait";
 import LoadingIndicator from "./Components/LoadingIndicator";
 import DeleteData from "./Components/DeleteData";
+import CreateData from "./Components/CreateData";
+import UpdateData from "./Components/UpdateData";
+import DeleteDataService from "./Components/DeleteDataService";
 
 
 const App = () => {
@@ -29,7 +32,10 @@ const App = () => {
         {/* <FetchingWFetch/> */}
         {/* <AsyncAwait/> */}
         {/* <LoadingIndicator/> */}
-        <DeleteData/>
+        {/* <DeleteData/> */}
+        {/* <CreateData/> */}
+        {/* <UpdateData/> */}
+        <DeleteDataService/>
     </>
   )
 }

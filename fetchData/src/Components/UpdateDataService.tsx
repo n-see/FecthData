@@ -1,5 +1,6 @@
+
 import { useEffect, useState } from "react";
-import axios from "axios";
+import userService from "../services/userService";
 
 interface User {
     id: number,
@@ -7,7 +8,7 @@ interface User {
 }
 
 
-const DeleteData = () => {
+const UpdateDataService = () => {
 
     //we need a useState to help us hold the state of our users
 
@@ -18,7 +19,8 @@ const DeleteData = () => {
     //create a function to help us fetch our data with axios
     const FetchData = () => {
         setIsLoading(true);
-        axios.get('https://jsonplaceholder.typicode.com/users')
+        const {request} = userService.getAll<User>()
+        request
         .then(response => {
         setUsers(response.data)
         setIsLoading(false);
@@ -42,16 +44,22 @@ const DeleteData = () => {
     }, [])
     
     //Lets create a helper function  to help us delete from our front end UI
-
-    const userDelete=(user:User) => {
-        setUsers(users.filter(u => u.id != user.id))
+    const updateUser = (user:User) => {
+        const originalUsers = [...users]
+        const updatedUser = {...user, name: user.name + '!'}
+        setUsers(users.map(u => u.id === user.id ? updatedUser : u))
+        userService.update(updatedUser)
+        .catch(error => {
+            setError(error.message);
+            setUsers(originalUsers)
+        })
     }
 
   return (
     <>
-        <h1 className="text-center">CRUD Delete with Axios</h1>
+        <h1 className="text-center">CRUD Update with Axios</h1>
         <ul className="list-group">
-            {users.map(user => <li className="list-group-item d-flex justify-content-between" key={user.id}>{user.name} <button onClick={() => userDelete(user)} className="btn btn-outline-danger">Delete</button></li>)}
+            {users.map(user => <li className="list-group-item d-flex justify-content-between" key={user.id}>{user.name} <button className="btn btn-outline-secondary" onClick={() => updateUser(user)}>Update</button></li>)}
             
             {error && (<p className="text-danger">{error}</p>)}
             {isLoading && <div className="spinner-border"></div>}
@@ -60,4 +68,4 @@ const DeleteData = () => {
   )
 }
 
-export default DeleteData
+export default UpdateDataService

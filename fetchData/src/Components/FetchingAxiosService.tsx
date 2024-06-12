@@ -1,6 +1,8 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import apiClients from "../services/apiClients";
+import userService from "../services/userService";
 
 interface User {
     id: number,
@@ -8,7 +10,7 @@ interface User {
 }
 
 
-const FetchingAxios = () => {
+const FetchingAxiosService = () => {
 
     //we need a useState to help us hold the state of our users
 
@@ -19,7 +21,8 @@ const FetchingAxios = () => {
 
     //create a function to help us fetch our data with axios
     const FetchData = () => {
-        axios.get('https://jsonplaceholder.typicode.com/users')
+        const {request} = userService.getAll<User>()
+        request
         .then(response => setUsers(response.data))
         .catch(error => setError(error.message));
         
@@ -46,4 +49,4 @@ const FetchingAxios = () => {
   )
 }
 
-export default FetchingAxios
+export default FetchingAxiosService

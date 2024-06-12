@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-
-interface User {
-    id: number,
-    name: string
-}
+import apiClients, {CanceledError} from "../services/apiClients";
+import userService, { User } from "../services/userService";
 
 
-const DeleteData = () => {
+
+// interface User {
+//     id: number,
+//     name: string
+// }
+
+
+const DeleteDataService = () => {
 
     //we need a useState to help us hold the state of our users
 
@@ -18,7 +21,8 @@ const DeleteData = () => {
     //create a function to help us fetch our data with axios
     const FetchData = () => {
         setIsLoading(true);
-        axios.get('https://jsonplaceholder.typicode.com/users')
+        const {request} = userService.getAll<User>()
+        request
         .then(response => {
         setUsers(response.data)
         setIsLoading(false);
@@ -44,7 +48,13 @@ const DeleteData = () => {
     //Lets create a helper function  to help us delete from our front end UI
 
     const userDelete=(user:User) => {
+        const originalUsers = [...users]
         setUsers(users.filter(u => u.id != user.id))
+        userService.delete(user.id)
+        .catch(error => {
+            setError(error.message)
+            setUsers(originalUsers)
+        })
     }
 
   return (
@@ -60,4 +70,4 @@ const DeleteData = () => {
   )
 }
 
-export default DeleteData
+export default DeleteDataService

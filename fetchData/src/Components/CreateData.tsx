@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+
 import axios from "axios";
+import { useEffect, useState } from "react";
+
 
 interface User {
     id: number,
@@ -7,7 +9,7 @@ interface User {
 }
 
 
-const DeleteData = () => {
+const CreateData = () => {
 
     //we need a useState to help us hold the state of our users
 
@@ -42,16 +44,29 @@ const DeleteData = () => {
     }, [])
     
     //Lets create a helper function  to help us delete from our front end UI
-
-    const userDelete=(user:User) => {
-        setUsers(users.filter(u => u.id != user.id))
+    const addUser = () => {
+        //original users []
+        const originalUsers = [...users];
+        //we are going to have a new object with an id and name
+        const newUser = {id: 0, name: "Aaron "};
+        //set our users and spread all users and add our new user
+        setUsers([newUser, ...users])
+        //We need to send this updated data to our backend
+        axios.post('https://jsonplaceholder.typicode.com/users', newUser)
+        .then(response => setUsers([response.data, ...users]))
+        .catch(error => {
+            setError(error.message);
+            setUsers(originalUsers)
+        })
     }
+ 
 
   return (
     <>
-        <h1 className="text-center">CRUD Delete with Axios</h1>
+        <h1 className="text-center">CRUD Create with Axios</h1>
+        <button className ="btn btn-outline-primary mx-3 mb-3" onClick={addUser}>Add</button>
         <ul className="list-group">
-            {users.map(user => <li className="list-group-item d-flex justify-content-between" key={user.id}>{user.name} <button onClick={() => userDelete(user)} className="btn btn-outline-danger">Delete</button></li>)}
+            {users.map(user => <li className="list-group-item d-flex justify-content-between" key={user.id}>{user.name} <button className="btn btn-outline-danger">Delete</button></li>)}
             
             {error && (<p className="text-danger">{error}</p>)}
             {isLoading && <div className="spinner-border"></div>}
@@ -60,4 +75,4 @@ const DeleteData = () => {
   )
 }
 
-export default DeleteData
+export default CreateData
