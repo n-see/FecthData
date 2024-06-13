@@ -1,47 +1,9 @@
-
-import { useEffect, useState } from "react";
-import userService from "../services/userService";
-
-interface User {
-    id: number,
-    name: string
-}
-
+import userService, { User } from "../services/userService";
+import useUsers from "../hooks/useUsers";
 
 const UpdateDataService = () => {
 
-    //we need a useState to help us hold the state of our users
-
-    const [users, setUsers] = useState<User[]>([]);
-    const [error, setError] = useState('');
-    //UseState for our is Loading Indicator
-    const [isLoading, setIsLoading] = useState(false);
-    //create a function to help us fetch our data with axios
-    const FetchData = () => {
-        setIsLoading(true);
-        const {request} = userService.getAll<User>()
-        request
-        .then(response => {
-        setUsers(response.data)
-        setIsLoading(false);
-        }
-    )
-        .catch(error => {
-            setError(error.message)
-            setIsLoading(false);
-        });
-        
-        
-    }
-
-    
-    
-    //UseEffect to help us with our fetching data
-    
-    useEffect(() => {
-        FetchData();
-    
-    }, [])
+    const {users, setUsers, error, setError, isLoading, setIsLoading} = useUsers();
     
     //Lets create a helper function  to help us delete from our front end UI
     const updateUser = (user:User) => {
